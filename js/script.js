@@ -1,4 +1,6 @@
-let inputMostrado = true;
+let inputMostrado = false;
+let entrada = document.querySelector("#entrada");
+let salida = document.querySelector("#salida");
 
 window.onload=()=> {
 
@@ -16,10 +18,8 @@ window.onload=()=> {
 //Crear input 1
 function crearInput1() {
 
-    let entrada = document.querySelector("#entrada");
     let input = document.createElement("input");
     input.setAttribute("id","input1");
-    input.setAttribute("name","input1");
     input.setAttribute("placeholder","Número 1");
     entrada.appendChild(input);
 
@@ -28,10 +28,8 @@ function crearInput1() {
 //Crear input 2
 function crearInput2() {
 
-    let entrada = document.querySelector("#entrada");
     let input = document.createElement("input");
     input.setAttribute("id","input2");
-    input.setAttribute("name","input2");
     input.setAttribute("placeholder","Número 2");
     entrada.appendChild(input);
 
@@ -56,7 +54,33 @@ function crearBoton() {
 
 
 //Crear todo
+function crearInputs(numeroInputs) {
+    
+    if(inputMostrado) {
+        
+        salida.innerHTML = "";
+        document.querySelector("#input1").remove();
 
+        if(document.querySelector("#input2")) { 
+
+            document.querySelector("#input2").remove();
+        }
+        borrarBoton();
+        inputMostrado=false;
+    }
+    if(!inputMostrado) {
+
+        entrada.style.visibility="visible";
+        crearInput1();
+
+        if(numeroInputs===2) {
+
+            crearInput2();
+        }
+    }
+    crearBoton();
+    inputMostrado=true;
+}   
 
 
 
@@ -64,44 +88,130 @@ function crearBoton() {
 
 function mostrarValorAbsoluto(){
     
-    crearInput1();
-    crearBoton();
+    crearInputs(1);
+    document.querySelector("#calcular").addEventListener("click",()=> {
+
+        let numero = document.querySelector("#input1").value;
+
+        if (validar(numero)) {
+
+            salida.textContent=`El valor absoluto de ${numero} es ${Math.abs(numero)}`;
+        }
+    })
 } 
 
 function mostrarEnteroSuperior(){
-    crearInput1();
     
+    crearInputs(1);
+    document.querySelector("#calcular").addEventListener("click",()=> {
+
+        let numero = document.querySelector("#input1").value;
+
+        if (validar(numero)) {
+
+            salida.textContent=`El entero superior de ${numero} es ${Math.ceil(numero)}`;
+        }
+    })
 } 
 
 function mostrarExponencial(){
-    crearInput1();
-    crearInput2();
     
+    crearInputs(2);
+    document.querySelector("#calcular").addEventListener("click",()=> {
+        
+        let numero1 = document.querySelector("#input1").value;
+        let numero2 = document.querySelector("#input2").value;
+        
+        if (validar(numero1)&&validar(numero2)) {
+                
+            salida.textContent=`El exponente ${numero2} de ${numero1} es ${numero1**numero2}`;
+        }
+    })
 } 
 
 function mostrarMaximo(){
-    crearInput1();
-    crearInput2();
     
+    crearInputs(2);
+    document.querySelector("#calcular").addEventListener("click",()=> {
+        
+        let numero1 = document.querySelector("#input1").value;
+        let numero2 = document.querySelector("#input2").value;
+        
+        if (validar(numero1)&&validar(numero2)) {
+                
+            salida.innerHTML=`El número más grande entre el ${numero1} y el ${numero2} es ${Math.max(numero1,numero2)}`;
+            
+        }
+    })
 } 
 
 function mostrarMinimo(){
-    crearInput1();
-    crearInput2();
     
+    crearInputs(2);
+    document.querySelector("#calcular").addEventListener("click",()=> {
+        
+        let numero1 = document.querySelector("#input1").value;
+        let numero2 = document.querySelector("#input2").value;
+        
+        if (validar(numero1)&&validar(numero2)) {
+                
+            salida.innerHTML=`El número más grande entre el ${numero1} y el ${numero2} es ${Math.min(numero1,numero2)}`;
+            
+        }
+    })
 } 
 
 function mostrarRedondear(){
-    crearInput1();
     
+    crearInputs(1);
+    document.querySelector("#calcular").addEventListener("click",()=> {
+
+        let numero = document.querySelector("#input1").value;
+
+        if (validar(numero)) {
+
+            salida.textContent=`El ${numero} redondeado es ${Math.round(numero)}`;//solo decimales
+        }
+    })
 } 
 
 function mostrarRaizCuadrada(){
-    crearInput1();
     
+    crearInputs(1);
+    document.querySelector("#calcular").addEventListener("click",()=> {
+
+        let numero = document.querySelector("#input1").value;
+
+        if (validar(numero)) {
+
+            salida.textContent=`La raíz cuadrada de ${numero} es ${Math.sqrt(numero).toFixed(3)}`;//solo decimales
+        }
+    })
 } 
 
 function mostrarTruncar(){
-    crearInput1();
+    
+    crearInputs(1);
+    document.querySelector("#calcular").addEventListener("click",()=> {
 
+        let numero = document.querySelector("#input1").value;
+
+        if (validar(numero)) {
+
+            salida.textContent=`El ${numero} truncado es ${Math.trunc(numero)}`;//solo decimales
+        }
+    })
 } 
+function validar(numero){
+
+    if (isNaN(numero)) {
+
+        salida.textContent="No es un número, chaval. Ponle un número a la calculeitor";
+        return false;
+    
+    } else {
+
+        return true;
+    }
+
+}
